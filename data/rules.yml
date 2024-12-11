@@ -1,0 +1,43 @@
+version: "3.1"
+
+rules:
+- rule: Activate flight booking form
+  steps:
+  - intent: book_flight
+  - action: action_check_flight_form_start
+  - active_loop: flight_booking_form
+
+- rule: Submit flight booking form after filling all slots
+  condition:
+  - active_loop: flight_booking_form
+  steps:
+  - action: flight_booking_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_submit_flight
+
+- rule: Handle affirm after flight suggestion
+  condition:
+  - active_loop: null
+  steps:
+  - intent: affirm
+  - action: action_submit_flight
+
+- rule: Handle deny after flight suggestion
+  condition:
+  - active_loop: null
+  steps:
+  - intent: deny
+  - action: action_submit_flight
+  - action: action_reset_flight_form
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: Respond to greet
+  steps:
+  - intent: greet
+  - action: utter_greet

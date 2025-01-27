@@ -69,9 +69,6 @@ class RasaClient:
                 intent_name = intent_info.get('name', 'unknown')
                 intent_confidence = intent_info.get('confidence', 0.0)
                 entities = parse_result.get('entities', [])
-                
-                if intent_name == 'inform':
-                    message_text = message_text.replace('মাস', 'পাঁচ')
 
             # Send message to webhook
             payload = {"sender": self.sender_id, "message": message_text}
